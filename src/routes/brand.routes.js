@@ -7,9 +7,8 @@ const {
 } = require('../helpers')
 const { validateJwt, validateFields, haveRole } = require('../middlewares')
 
-const { BrandService } = require('../services/brand.service')
-const { UserService } = require('../services/user.service')
-const { BrandController } = require('../controllers/brand.controller')
+const { BrandService, UserService } = require('../services')
+const { BrandController } = require('../controllers')
 
 const router = Router()
 

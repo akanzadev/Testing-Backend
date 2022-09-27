@@ -1,6 +1,6 @@
 
 const mockListUsersResponse = require('../mocks/list-users-response.json')
-const { UserController } = require('../../../../src/controllers/user')
+const { UserController } = require('../../../../src/controllers/user.controller')
 let { UserService } = require('../../../../src/services/user.service')
 
 class MockUserApplication {

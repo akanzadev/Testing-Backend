@@ -52,18 +52,10 @@ const existecategoriaConEstadoTrue = async (id = '') => {
   }
 }
 
-const existeProducto = async (id = '') => {
-  // Verificar si el nombre existe Existe
-  const existeProducto = await Product.findById(id)
-  if (!existeProducto) {
-    throw new Error(`El id producto-> ${id}, no existe en db`)
-  }
-}
-const existeProductoporId = async (id = '') => {
-  // Verificar si el nombre existe Existe
-  const existeProducto = await Product.findById(id)
-  if (!existeProducto) {
-    throw new Error(`El id producto-> ${id}, o eexiste en db`)
+const existsProduct = async (id = '') => {
+  const existsProduct = await Product.findById(id)
+  if (!existsProduct) {
+    throw new Error(`The product with id ${id} does not exist`)
   }
 }
 
@@ -147,8 +139,7 @@ module.exports = {
   estadoActivoProducto,
   existsCategory,
   existecategoriaConEstadoTrue,
-  existeProducto,
-  existeProductoporId,
+  existsProduct,
   existeProductoPorNombreDeCategoria,
   existsProductsWithCategory,
   existsRole,

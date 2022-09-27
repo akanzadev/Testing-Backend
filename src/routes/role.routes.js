@@ -4,8 +4,8 @@ const { check } = require('express-validator')
 const { existsRoleById } = require('../helpers')
 const { validateJwt, validateFields, haveRole } = require('../middlewares')
 
-const { RoleService } = require('../services/role.service')
-const { RoleController } = require('../controllers/role.controller')
+const { RoleService } = require('../services')
+const { RoleController } = require('../controllers')
 
 const roleService = new RoleService()
 const roleController = new RoleController(roleService)

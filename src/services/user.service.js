@@ -1,7 +1,7 @@
 
 const bcryptjs = require('bcryptjs')
 const { User } = require('../models')
-const { generateJwt } = require('../helpers/validate-jwt')
+const { generateJwt } = require('../helpers')
 
 class UserService {
   async list (limit, offset) {

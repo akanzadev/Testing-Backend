@@ -7,9 +7,8 @@ const {
 } = require('../helpers/db-validators')
 const { validateJwt, validateFields, haveRole } = require('../middlewares')
 
-const { UserService } = require('../services/user.service')
-const { CategoryService } = require('../services/category.service')
-const { CategoryController } = require('../controllers/category.controller')
+const { UserService, CategoryService } = require('../services')
+const { CategoryController } = require('../controllers')
 
 const router = Router()
 

@@ -13,12 +13,12 @@ class Server {
     this.httpServer = http.createServer(this.app)
 
     this.paths = {
-      auth: '/api/auth',
+      /* auth: '/api/auth', */
       users: '/api/users',
       categories: '/api/categories',
       products: '/api/products',
-      buscar: '/api/buscar',
-      uploads: '/api/uploads',
+      /* buscar: '/api/buscar',
+      uploads: '/api/uploads', */
       roles: '/api/roles',
       brands: '/api/brands'
     }
@@ -49,13 +49,13 @@ class Server {
   }
 
   route () {
-    this.app.use(this.paths.auth, require('../routes/auth'))
     this.app.use(this.paths.users, require('../routes/user.routes'))
     this.app.use(this.paths.brands, require('../routes/brand.routes'))
     this.app.use(this.paths.categories, require('../routes/category.routes'))
     this.app.use(this.paths.roles, require('../routes/role.routes'))
-    /* this.app.use(this.paths.productos, require('../routes/productos.js'))
-    this.app.use(this.paths.buscar, require('../routes/buscar.js'))
+    this.app.use(this.paths.products, require('../routes/product.routes'))
+    /* this.app.use(this.paths.buscar, require('../routes/buscar.js'))
+    this.app.use(this.paths.auth, require('../routes/auth'))
     this.app.use(this.paths.uploads, require('../routes/uploads.js')) */
   }
 

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const ProductoSchema = mongoose.Schema({
+const ProductSchema = mongoose.Schema({
   name: {
     type: String,
     require: [true, 'Name is required'],
@@ -39,10 +39,10 @@ const ProductoSchema = mongoose.Schema({
   }
 })
 
-ProductoSchema.methods.toJSON = function () {
+ProductSchema.methods.toJSON = function () {
   const { __v, estado, ...data } = this.toObject()
 
   return data
 }
 
-module.exports = mongoose.model('Producto', ProductoSchema)
+module.exports = mongoose.model('Product', ProductSchema)
