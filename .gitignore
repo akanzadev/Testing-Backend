@@ -5,3 +5,6 @@ node_modules/
 
 uploads/productos/**.jpg
 uploads/usuarios/**.jpg
+
+
+reports/

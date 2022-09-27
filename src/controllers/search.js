@@ -1,24 +1,21 @@
 const { response, request } = require('express')
 const { ObjectId } = require('mongoose').Types
 
-const { Categoria, Producto, Usuario } = require('./../models')
+const { Categoria, Producto, Usuario } = require('../models')
 
-const coleccionesPermitidas = [
-  'usuarios',
-  'categorias',
-  'productos',
-  'roles'
-]
+const coleccionesPermitidas = ['usuarios', 'categorias', 'productos', 'roles']
 
 const buscarProductos = async (termino = '', res = response) => {
   const esMongoId = ObjectId.isValid(termino)
 
   if (esMongoId) {
-    const producto = await Producto.findById(termino)
-      .populate('categoria', 'nombre')
+    const producto = await Producto.findById(termino).populate(
+      'categoria',
+      'nombre'
+    )
 
     return res.json({
-      results: (producto) ? [producto] : []
+      results: producto ? [producto] : []
     })
   }
 
@@ -41,7 +38,7 @@ const buscarCategorias = async (termino = '', res = response) => {
   if (esMongoId) {
     const categoria = await Categoria.findById(termino)
     return res.json({
-      results: (categoria) ? [categoria] : []
+      results: categoria ? [categoria] : []
     })
   }
 
@@ -61,7 +58,7 @@ const buscarUsuarios = async (termino = '', res = response) => {
     if (esMongoId) {
       const usuario = await Usuario.findById(termino)
       return res.json({
-        results: (usuario) ? [usuario] : []
+        results: usuario ? [usuario] : []
       })
     }
 

@@ -1,0 +1,31 @@
+{
+  "total": "2",
+  "users": [
+    {
+      "rol": "ADMIN_ROLE",
+      "estado": true,
+      "google": false,
+      "telefono": 456123789,
+      "longitud": 0,
+      "latitud": 0,
+      "favoritos": [],
+      "nombre": "cristian chipana",
+      "correo": "cristian@gmail.com",
+      "img": "https://acnews.blob.core.windows.net/imgnews/extralarge/NAZ_2abfdc852e154863a565fd8002c4a904.jpg",
+      "uid": "628da869ef32121da00f9270"
+    },
+    {
+      "rol": "ADMIN_ROLE",
+      "estado": true,
+      "google": true,
+      "telefono": 456789321,
+      "longitud": 0,
+      "latitud": 0,
+      "favoritos": [],
+      "correo": "carlos@gmail.com",
+      "img": "https://cumbrepuebloscop20.org/wp-content/uploads/2018/09/Le%C3%B3n-2.jpg",
+      "nombre": "Carlos Chirinos",
+      "uid": "629b9e96e4f36473a35f364c"
+    }
+  ]
+}

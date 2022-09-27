@@ -1,8 +1,8 @@
 const { response, request } = require('express')
 const bcryptjs = require('bcryptjs')
 
-const Usuario = require('../models/usuario')
-const { generarJWT } = require('../helpers/generarJWT.JS')
+const Usuario = require('../models/user.entity')
+const { validateJwt } = require('../helpers/validate-jwt.js')
 const { googleVerify } = require('../helpers/google-verify')
 
 const login = async (req = request, res = response) => {
@@ -10,21 +10,18 @@ const login = async (req = request, res = response) => {
 
   try {
     const usuario = await Usuario.findOne({ correo })
-
     if (!usuario) {
       return res.status(400).json({
         msg: 'Usuario / Password incorrectos - correo',
         correo
       })
     }
-
     if (!usuario.estado) {
       return res.status(400).json({
         msg: 'Usuario / Password incorrectos - estado - false',
         correo
       })
     }
-
     const validPassword = bcryptjs.compareSync(password, usuario.password)
     if (!validPassword) {
       return res.status(400).json({
@@ -33,7 +30,7 @@ const login = async (req = request, res = response) => {
       })
     }
 
-    const token = await generarJWT(usuario.id)
+    const token = await validateJwt(usuario.id)
 
     return res.json({
       msg: 'Login',
@@ -73,7 +70,7 @@ const googleSignin = async (req = request, res = response) => {
     }
     const a = usuario.id
 
-    const token = await generarJWT(usuario.uid)
+    const token = await validateJwt(usuario.uid)
 
     return res.status(200).json({
       msg: 'Todo ok! , miau',
@@ -94,7 +91,7 @@ const RenovarJWT = async (req = request, res = response) => {
   const usuario = req.usuario
 
   try {
-    const token = await generarJWT(usuario.id)
+    const token = await validateJwt(usuario.id)
 
     res.json({
       token,

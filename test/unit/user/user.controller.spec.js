@@ -18,10 +18,8 @@ describe('User Controller', () => {
 
   it('should return a list of users', async () => {
     try {
-      expect(true).toBe(true)
-
-      /* await userController.getUsers(request, response)
-      mockUserApplication.assertListUsers(response) */
+      await userController.getUsers(request, response)
+      mockUserApplication.assertListUsers(response)
     } catch (error) {
       console.log(error)
     }

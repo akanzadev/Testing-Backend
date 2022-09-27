@@ -1,22 +1,14 @@
 
-const Categoria = require('./categoria')
-const Role = require('./role')
-const Server = require('./server')
-const Usuario = require('./usuario')
-const Producto = require('./producto')
-const Pedido = require('./pedido')
-const Bodega = require('./bodega')
-const DetallePedido = require('./detallePedido')
-const Marca = require('./marca')
+const Category = require('./category.entity')
+const Role = require('./role.entity')
+const User = require('./user.entity')
+const Product = require('./product.entity')
+const Brand = require('./brand.entity')
 
 module.exports = {
-  Categoria,
+  Category,
   Role,
-  Server,
-  Usuario,
-  Producto,
-  Pedido,
-  Bodega,
-  DetallePedido,
-  Marca
+  User,
+  Product,
+  Brand
 }

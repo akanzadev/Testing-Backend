@@ -1,40 +1,14 @@
-const { response, request } = require('express')
-
-const esAdminRole = (req = request, res = response, next) => {
-  if (!req.usuario) {
-    return res.status(500).json({
-      msg: 'Se quiere eliminar sin verificar que exista - el token primero'
-    })
-  }
-  const { rol, nombre } = req.usuario
-
-  if (rol !== 'ADMIN_ROLE') {
-    return res.status(401).json({
-      msg: `${nombre} debe ser administrador`
-    })
-  }
-  next()
-}
-
-const tieneRole = (...roles) => {
-  console.log(roles)
-  return (req = request, res = response, next) => {
+const haveRole = (...roles) => {
+  return (req, res, next) => {
     if (!req.usuario) {
-      return res.status(500).json({
-        msg: 'Se  quiere verificar el role sin valiodar el token primero '
-      })
+      return next(new Error('Error validating role'))
     }
 
-    if (!roles.includes(req.usuario.rol)) {
-      return res.status(401).json({
-        msg: `El servicio requiere uno de estos roles ${roles}`
-      })
+    if (!roles.includes(req.user.role)) {
+      return next(new Error('You do not have the necessary permissions'))
     }
     next()
   }
 }
 
-module.exports = {
-  esAdminRole,
-  tieneRole
-}
+module.exports = { haveRole }

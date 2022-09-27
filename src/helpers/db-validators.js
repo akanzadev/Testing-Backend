@@ -1,54 +1,42 @@
-const Usuario = require('../models/usuario')
-const {
-  Categoria,
-  Role,
-  Producto,
-  Bodega,
-  Pedido,
-  Marca
-} = require('./../models')
+const { Category, Role, Product, Marca: Brand, User } = require('./../models')
 
-const esRoleValido = async (rol = '') => {
-  const existeRol = await Role.findOne({ rol })
-  if (!existeRol) {
-    throw new Error(`El rol ${rol}  no esta registrado `)
+const existsRole = async (role = '') => {
+  const existsRole = await Role.findOne({ role })
+  if (!existsRole) {
+    throw new Error(`The role ${role} does not exist`)
   }
 }
 
-const emailExiste = async (correo = '') => {
-  // Verificar si el correo Existe
-  const existeEmail = await Usuario.findOne({ correo })
-  if (existeEmail) {
-    throw new Error(`El correo ${correo}  ya existe!! `)
+const emailInUse = async (email = '') => {
+  const user = await User.findOne({ email })
+  if (user) {
+    throw new Error(`The email ${email} is already in use`)
   }
 }
 
-const existeUsuariPorId = async (id = '') => {
-  // Verificar si el correo Existe
-  const existeUsuario = await Usuario.findById(id)
-  if (!existeUsuario) {
-    throw new Error(`El id ${id}, no existe!`)
+const existsUserById = async (id = '') => {
+  const existsUser = await User.findById(id)
+  if (!existsUser) {
+    throw new Error(`The user with id ${id} does not exist`)
   }
 }
 
-// Se parece a esta
-const existeCategoria = async (id = '') => {
-  // Verificar si el correo Existe
-  const existeCategoria1 = await Categoria.findById(id)
-  if (!existeCategoria1) {
-    throw new Error(`El id ${id} de categoria no existe!! `)
+const existsCategory = async (id = '') => {
+  const existsCategory = await Category.findById(id)
+  if (!existsCategory) {
+    throw new Error(`The category with id ${id} does not exist`)
   }
 }
 
-const estadoActivoCategoria = async (id = '') => {
-  const activadoCategoria = await Categoria.findById(id)
-  if (!activadoCategoria.estado) {
-    throw new Error('El estado es false, no existe!! ')
+const categoryIsActive = async (id = '') => {
+  const category = await Category.findById(id)
+  if (!category.status) {
+    throw new Error('The category is not active')
   }
 }
 
 const estadoActivoProducto = async (id = '') => {
-  const activoProducto = await Producto.findById(id)
+  const activoProducto = await Product.findById(id)
   if (!activoProducto.estado) {
     throw new Error('El estado es false, no existe!! ')
   }
@@ -56,7 +44,7 @@ const estadoActivoProducto = async (id = '') => {
 
 const existecategoriaConEstadoTrue = async (id = '') => {
   // Verificar si el nombre existe Existe
-  const existecategoria = await Categoria.findById(id)
+  const existecategoria = await Category.findById(id)
   if (existecategoria) {
     throw new Error(
       `El id ${id}, existe!! -  El id de esa categoria esta en false`
@@ -66,14 +54,14 @@ const existecategoriaConEstadoTrue = async (id = '') => {
 
 const existeProducto = async (id = '') => {
   // Verificar si el nombre existe Existe
-  const existeProducto = await Producto.findById(id)
+  const existeProducto = await Product.findById(id)
   if (!existeProducto) {
     throw new Error(`El id producto-> ${id}, no existe en db`)
   }
 }
 const existeProductoporId = async (id = '') => {
   // Verificar si el nombre existe Existe
-  const existeProducto = await Producto.findById(id)
+  const existeProducto = await Product.findById(id)
   if (!existeProducto) {
     throw new Error(`El id producto-> ${id}, o eexiste en db`)
   }
@@ -95,31 +83,24 @@ const coleccionesPermitidas = (coleccion = '', colecciones = []) => {
   return true
 }
 
-const existeRolporID = async (id = '') => {
-  const existeRol = await Role.findById(id)
-  if (!existeRol) {
-    throw new Error(`El id producto-> ${id}, o eexiste en db`)
+const existsRoleById = async (id = '') => {
+  const role = await Role.findById(id)
+  if (!role) {
+    throw new Error(`The role with id ${id} does not exist`)
   }
 }
 
-const existeSolicitudporID = async (id = '') => {
-  const existeRol = await Solicitud.findById(id)
-  if (!existeRol) {
-    throw new Error(`El id producto-> ${id}, o existe en db`)
-  }
-}
-
-const existeProductoRelacionadoACategoria = async (id = '') => {
-  const existeProducto = await Producto.findOne({ categoria: id })
-  if (existeProducto) {
+const existsProductsWithCategory = async (id = '') => {
+  const existsProducts = await Product.findOne({ category: id })
+  if (existsProducts) {
     throw new Error(
-      `la categoria identificado por -> ${id}, tiene productos que le hacen referencia, elimine todos los productos relacionados a esta categoria`
+      `The category with id ${id} has products associated, delete them first`
     )
   }
 }
 
 const existeProductoPorNombreDeCategoria = async (nombre = '') => {
-  const categoria = await Categoria.findOne({ nombre })
+  const categoria = await Category.findOne({ nombre })
   if (!categoria) {
     throw new Error(
       `la categoria con el nombre-> ${nombre}, no existe en la base de datos`
@@ -127,92 +108,53 @@ const existeProductoPorNombreDeCategoria = async (nombre = '') => {
   }
 }
 
-const existeBodegueroConEstadoTrue = async (id) => {
-  // id de la bodega
-  const existeBodega = await Bodega.findOne({ estado: true, _id: id })
-  if (!existeBodega) {
-    throw new Error(`El bodeguero identificado con ${id}, no existe!! `)
-  }
-}
-
-const existeBodegaConUsuario = async (id) => {
-  // id del usuario
-  const existeBodega = await Bodega.findOne({ usuario: id })
-  // console.log(existeBodega);
-  if (!existeBodega) {
-    throw new Error(`El bodeguero identificado con ${id}, no existe!! `)
-  }
-}
-
 const isVaidIdProducto = async (productos) => {
   productos.forEach(async (producto) => {
-    const existeProducto = await Producto.find(producto.producto)
+    const existeProducto = await Product.find(producto.producto)
     if (!existeProducto) {
       throw new Error(`El producto-> ${producto.producto}, no existe`)
     }
   })
 }
 
-const existePedidoId = async (id) => {
-  const existePedido = await Pedido.findById(id)
-  if (!existePedido) {
-    throw new Error(`El pedido identificado con ${id}, no existe!! `)
+const existsBrand = async (id = '') => {
+  const existsBrand = await Brand.findById(id)
+  if (!existsBrand) {
+    throw new Error(`The brand with id ${id} does not exist`)
   }
 }
 
-const existeBodegaConestadoTrue = async (id) => {
-  const existeBodega = await Bodega.findOne({ estado: true, _id: id })
-  if (!existeBodega) {
-    throw new Error(`El bodeguero identificado con ${id}, no existe!! `)
+const brandIsActive = async (id = '') => {
+  const brand = await Brand.findById(id)
+  if (!brand.estado) {
+    throw new Error('This brand is not active')
   }
 }
 
-// validation for brands
-const existeMarca = async (id = '') => {
-  // Verificar si el correo Existe
-  const existeMarca = await Marca.findById(id)
-  if (!existeMarca) {
-    throw new Error(`El id ${id} de la marca no existe!`)
-  }
-}
-
-const estadoActivoMarca = async (id = '') => {
-  const activadoMarca = await Marca.findById(id)
-  if (!activadoMarca.estado) {
-    throw new Error('El estado es false, no existe!! ')
-  }
-}
-
-const existeProductoRelacionadoMarca = async (id = '') => {
-  const existeProducto = await Producto.findOne({ categoria: id })
-  if (existeProducto) {
+const existsProductsWithBrand = async (id = '') => {
+  const existsProducts = await Product.findOne({ category: id })
+  if (existsProducts) {
     throw new Error(
-      `la marca identificada por el -> ${id}, tiene productos que le hacen referencia, elimine todos los productos relacionados a esta categoria`
+      `The brand with id ${id} has products associated, delete them first`
     )
   }
 }
-
 module.exports = {
-  esRoleValido,
-  emailExiste,
-  existeUsuariPorId,
-  existeCategoria,
-  estadoActivoCategoria,
-  estadoActivoProducto,
-  existeProducto,
-  existecategoriaConEstadoTrue,
-  existeProductoporId,
+  brandIsActive,
   coleccionesPermitidas,
-  existeRolporID,
-  existeSolicitudporID,
-  existeProductoRelacionadoACategoria,
+  emailInUse,
+  categoryIsActive,
+  estadoActivoProducto,
+  existsCategory,
+  existecategoriaConEstadoTrue,
+  existeProducto,
+  existeProductoporId,
   existeProductoPorNombreDeCategoria,
-  existeBodegueroConEstadoTrue,
-  isVaidIdProducto,
-  existePedidoId,
-  existeBodegaConestadoTrue,
-  existeMarca,
-  estadoActivoMarca,
-  existeProductoRelacionadoMarca,
-  existeBodegaConUsuario
+  existsProductsWithCategory,
+  existsRole,
+  existsBrand,
+  existsProductsWithBrand,
+  existsRoleById,
+  existsUserById,
+  isVaidIdProducto
 }
