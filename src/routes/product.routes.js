@@ -15,16 +15,17 @@ const { ProductController } = require('../controllers')
 
 const router = Router()
 
-const userService = new UserService()
-const categoryService = new CategoryService(userService)
-const brandService = new BrandService(userService)
-const productController = new ProductController(
-  userService,
-  categoryService,
-  brandService
-)
-
-router.get('/', productController.getProducts)
+router.get('/', (req, res, next) => {
+  const userService = new UserService()
+  const categoryService = new CategoryService(userService)
+  const brandService = new BrandService(userService)
+  const productController = new ProductController(
+    userService,
+    categoryService,
+    brandService
+  )
+  productController.getProducts(req, res, next)
+})
 
 router.get(
   '/:id',
@@ -33,7 +34,17 @@ router.get(
     check('id').custom(existsProduct),
     validateFields
   ],
-  productController.getProduct
+  (req, res, next) => {
+    const userService = new UserService()
+    const categoryService = new CategoryService(userService)
+    const brandService = new BrandService(userService)
+    const productController = new ProductController(
+      userService,
+      categoryService,
+      brandService
+    )
+    productController.getProduct(req, res, next)
+  }
 )
 
 /* router.get(
@@ -96,7 +107,17 @@ router.put(
 router.delete(
   '/:id',
   [validateJwt, haveRole('ADMIN_ROLE'), check('id', 'Invalid ID').isMongoId()],
-  productController.deleteProduct
+  (req, res, next) => {
+    const userService = new UserService()
+    const categoryService = new CategoryService(userService)
+    const brandService = new BrandService(userService)
+    const productController = new ProductController(
+      userService,
+      categoryService,
+      brandService
+    )
+    productController.deleteProduct(req, res, next)
+  }
 )
 
 module.exports = router

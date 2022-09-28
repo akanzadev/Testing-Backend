@@ -1,6 +1,6 @@
 class ProductController {
-  constructor (productController) {
-    this.productController = productController
+  constructor (productService) {
+    this.productService = productService
   }
 
   async getProducts (req, res, next) {
