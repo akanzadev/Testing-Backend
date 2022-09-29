@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "echo \"Building...\"",
     "start": "node app",
     "start:dev": "nodemon app",
     "eslint": "eslint .",
