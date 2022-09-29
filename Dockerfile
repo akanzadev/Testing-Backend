@@ -28,4 +28,4 @@ COPY --from=DEPLOYMENT /build ./dist
 
 COPY --from=DEPLOYMENT /build/.env ./.env
 
-CMD ["npm", "run", "prod"]
+CMD ["npm", "run", "start:prod"]
