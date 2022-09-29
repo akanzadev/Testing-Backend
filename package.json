@@ -2,11 +2,12 @@
   "name": "testing-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "build": "echo \"Building...\"",
     "start": "node app",
     "start:dev": "nodemon app",
+    "start:prod": "node dist/app",
     "eslint": "eslint .",
     "eslint:fix": "eslint . --fix",
     "test": "cross-env NODE_ENV=development jest --coverage --passWithNoTests",
@@ -16,7 +17,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.26.3",
@@ -25,11 +26,9 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "express-validator": "^6.12.1",
-    "google-auth-library": "^7.6.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.7",
     "morgan": "^1.10.0",
-    "socket.io": "^4.0.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
