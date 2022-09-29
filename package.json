@@ -7,7 +7,7 @@
     "build": "echo \"Building...\"",
     "start": "node app",
     "start:dev": "nodemon app",
-    "start:prod": "node app",
+    "start:prod": "node /app",
     "eslint": "eslint .",
     "eslint:fix": "eslint . --fix",
     "test": "cross-env NODE_ENV=development jest --coverage --passWithNoTests",
