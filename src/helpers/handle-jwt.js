@@ -9,9 +9,8 @@ const ckeckJwt = (token = '') => {
   }
 }
 
-const generateJwt = (uuid = '') => {
+const generateJwt = (payload = '') => {
   return new Promise((resolve, reject) => {
-    const payload = { uuid }
     jwt.sign(
       payload,
       process.env.SECRETKEY,
