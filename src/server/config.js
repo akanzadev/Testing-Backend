@@ -5,6 +5,7 @@ const fileUpload = require('express-fileupload')
 const morgan = require('morgan')
 
 const { dbConnection } = require('../database/connection.js')
+const { errorHandler, expressValErrors } = require('../middlewares')
 
 class Server {
   constructor () {
@@ -13,7 +14,7 @@ class Server {
     this.httpServer = http.createServer(this.app)
 
     this.paths = {
-      /* auth: '/api/auth', */
+      auth: '/api/auth',
       users: '/api/users',
       categories: '/api/categories',
       products: '/api/products',
@@ -26,7 +27,9 @@ class Server {
 
     this.middlewares()
 
-    this.route()
+    this.mountRoutes()
+
+    this.errorHandler()
   }
 
   async conectarBD () {
@@ -48,15 +51,20 @@ class Server {
     this.app.use(morgan('dev'))
   }
 
-  route () {
+  mountRoutes () {
     this.app.use(this.paths.users, require('../routes/user.routes'))
     this.app.use(this.paths.brands, require('../routes/brand.routes'))
     this.app.use(this.paths.categories, require('../routes/category.routes'))
     this.app.use(this.paths.roles, require('../routes/role.routes'))
     this.app.use(this.paths.products, require('../routes/product.routes'))
+    this.app.use(this.paths.auth, require('../routes/auth.routes'))
     /* this.app.use(this.paths.buscar, require('../routes/buscar.js'))
-    this.app.use(this.paths.auth, require('../routes/auth'))
     this.app.use(this.paths.uploads, require('../routes/uploads.js')) */
+  }
+
+  errorHandler () {
+    // this.app.use(expressValErrors)
+    this.app.use(errorHandler)
   }
 
   listen () {

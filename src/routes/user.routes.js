@@ -1,10 +1,6 @@
 const { Router } = require('express')
 const { check } = require('express-validator')
-const {
-  existsRole,
-  emailInUse,
-  existsUserById
-} = require('../helpers')
+const { existsRole, emailInUse, existsUserById } = require('../helpers')
 const { validateJwt, haveRole, validateFields } = require('../middlewares')
 
 const { UserService } = require('../services')
@@ -12,10 +8,11 @@ const { UserController } = require('../controllers')
 
 const router = Router()
 
-const userService = new UserService()
-const userController = new UserController(userService)
-
-router.get('/', userController.getUsers)
+router.get('/', (req, res, next) => {
+  const userService = new UserService()
+  const userController = new UserController(userService)
+  userController.getUsers(req, res, next)
+})
 
 router.get(
   '/:id',
@@ -24,7 +21,11 @@ router.get(
     check('id').custom(existsUserById),
     validateFields
   ],
-  userController.getUser
+  (req, res, next) => {
+    const userService = new UserService()
+    const userController = new UserController(userService)
+    userController.getUser(req, res, next)
+  }
 )
 
 router.post(
@@ -41,7 +42,11 @@ router.post(
     check('role').custom(existsRole),
     validateFields
   ],
-  userController.createUser
+  (req, res, next) => {
+    const userService = new UserService()
+    const userController = new UserController(userService)
+    userController.createUser(req, res, next)
+  }
 )
 
 router.put(
@@ -56,7 +61,11 @@ router.put(
     check('email', 'Invalid email').isEmail(),
     validateFields
   ],
-  userController.updateUser
+  (req, res, next) => {
+    const userService = new UserService()
+    const userController = new UserController(userService)
+    userController.updateUser(req, res, next)
+  }
 )
 
 router.delete(
@@ -68,7 +77,11 @@ router.delete(
     check('id').custom(existsUserById),
     validateFields
   ],
-  userController.deleteUser
+  (req, res, next) => {
+    const userService = new UserService()
+    const userController = new UserController(userService)
+    userController.deleteUser(req, res, next)
+  }
 )
 
 module.exports = router

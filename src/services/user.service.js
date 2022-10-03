@@ -1,4 +1,3 @@
-
 const bcryptjs = require('bcryptjs')
 const { User } = require('../models')
 const { generateJwt } = require('../helpers')
@@ -14,6 +13,10 @@ class UserService {
 
   async findOne (id) {
     return await User.findById(id)
+  }
+
+  async findOneByEmail (email) {
+    return await User.findOne({ email })
   }
 
   async create (data) {
