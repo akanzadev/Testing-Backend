@@ -9,7 +9,7 @@ const validateJwt = async (req, res, next) => {
     if (!token) { return next(new Error('No hay token en la petición')) }
 
     const { uuid } = jwt.verify(token, process.env.SECRETKEY)
-    const user = await User.findById(uuid)
+    const user = await User.findById({ _id: uuid })
 
     if (!user) { return next(new Error('No existe el usuario')) }
 
