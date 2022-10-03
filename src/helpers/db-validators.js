@@ -1,7 +1,7 @@
 const { Category, Role, Product, Marca: Brand, User } = require('./../models')
 
-const existsRole = async (role = '') => {
-  const existsRole = await Role.findOne({ role })
+const existsRole = async (role = 'USER_ROLE') => {
+  const existsRole = await Role.findOne({ name: role })
   if (!existsRole) {
     throw new Error(`The role ${role} does not exist`)
   }

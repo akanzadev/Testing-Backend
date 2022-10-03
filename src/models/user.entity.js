@@ -27,14 +27,13 @@ const UserSchema = mongoose.Schema({
   },
   role: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Role',
-    default: 'USER_ROLE'
+    ref: 'Role'
   }
 })
 
 UserSchema.methods.toJSON = function () {
   const { _id, __v, password, ...rest } = this.toObject()
-  rest.uid = _id
+  rest.uuid = _id
   return rest
 }
 

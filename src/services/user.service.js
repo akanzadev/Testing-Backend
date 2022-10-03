@@ -3,6 +3,10 @@ const { User } = require('../models')
 const { generateJwt } = require('../helpers')
 
 class UserService {
+  constructor (roleService) {
+    this.roleService = roleService
+  }
+
   async list (limit, offset) {
     const [total, users] = await Promise.all([
       User.countDocuments({ estado: true }),
@@ -20,7 +24,13 @@ class UserService {
   }
 
   async create (data) {
-    const user = new User(data)
+    let role = ''
+    if (data.role) {
+      role = await this.roleService.findByName(data.role)
+    } else {
+      role = await this.roleService.findByName('USER_ROLE')
+    }
+    const user = new User({ ...data, role })
     const salt = bcryptjs.genSaltSync()
     user.password = bcryptjs.hashSync(data.password, salt)
     await user.save()

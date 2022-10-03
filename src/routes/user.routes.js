@@ -3,13 +3,14 @@ const { check } = require('express-validator')
 const { existsRole, emailInUse, existsUserById } = require('../helpers')
 const { validateJwt, haveRole, validateFields } = require('../middlewares')
 
-const { UserService } = require('../services')
+const { UserService, RoleService } = require('../services')
 const { UserController } = require('../controllers')
 
 const router = Router()
 
 router.get('/', (req, res, next) => {
-  const userService = new UserService()
+  const roleService = new RoleService()
+  const userService = new UserService(roleService)
   const userController = new UserController(userService)
   userController.getUsers(req, res, next)
 })
@@ -22,7 +23,8 @@ router.get(
     validateFields
   ],
   (req, res, next) => {
-    const userService = new UserService()
+    const roleService = new RoleService()
+    const userService = new UserService(roleService)
     const userController = new UserController(userService)
     userController.getUser(req, res, next)
   }
@@ -43,7 +45,8 @@ router.post(
     validateFields
   ],
   (req, res, next) => {
-    const userService = new UserService()
+    const roleService = new RoleService()
+    const userService = new UserService(roleService)
     const userController = new UserController(userService)
     userController.createUser(req, res, next)
   }
@@ -62,7 +65,8 @@ router.put(
     validateFields
   ],
   (req, res, next) => {
-    const userService = new UserService()
+    const roleService = new RoleService()
+    const userService = new UserService(roleService)
     const userController = new UserController(userService)
     userController.updateUser(req, res, next)
   }
@@ -78,7 +82,8 @@ router.delete(
     validateFields
   ],
   (req, res, next) => {
-    const userService = new UserService()
+    const roleService = new RoleService()
+    const userService = new UserService(roleService)
     const userController = new UserController(userService)
     userController.deleteUser(req, res, next)
   }

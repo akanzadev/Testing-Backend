@@ -14,6 +14,13 @@ class RoleService {
     return await Role.findById(id)
   }
 
+  async findByName (name) {
+    const role = await Role.findOne({ name })
+    if (!role) {
+      throw new Error(`Role ${name} not found`)
+    }
+  }
+
   async create (data) {
     const role = new Role(data)
     await role.save()
