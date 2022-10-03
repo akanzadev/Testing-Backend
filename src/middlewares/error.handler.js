@@ -1,4 +1,3 @@
-
 function logErrors (err, req, res, next) {
   if (process.env.MODE === 'development') {
     console.error('Log Error', err)
@@ -7,9 +6,7 @@ function logErrors (err, req, res, next) {
 }
 
 function expressValErrors (err, req, res, next) {
-  console.log('expressValErrors', { err })
   const { errors = false } = err
-  console.log('errors', errors)
   if (errors) {
     const error = new Error()
     error.status = 400

@@ -7,47 +7,72 @@ const { validateJwt, validateFields, haveRole } = require('../middlewares')
 const { RoleService } = require('../services')
 const { RoleController } = require('../controllers')
 
-const roleService = new RoleService()
-const roleController = new RoleController(roleService)
-
 const router = Router()
 
-router.get('/', roleController.getRoles)
+router.get('/', (req, res, next) => {
+  const roleService = new RoleService()
+  const roleController = new RoleController(roleService)
+  roleController.getRoles(req, res, next)
+})
 
-router.get('/:id',
+router.get(
+  '/:id',
   [
     check('id', 'Invalid ID').isMongoId(),
     check('id').custom(existsRoleById),
     validateFields
-  ]
-  , roleController.getRole)
+  ],
+  (req, res, next) => {
+    const roleService = new RoleService()
+    const roleController = new RoleController(roleService)
+    roleController.getRole(req, res, next)
+  }
+)
 
-router.post('/',
+router.post(
+  '/',
   [
-    validateJwt,
+    // validateJwt,
     check('name', 'Name is required').not().isEmpty(),
     check('description', 'Description is required').not().isEmpty(),
     validateFields
-  ]
-  , roleController.createRole)
+  ],
+  (req, res, next) => {
+    const roleService = new RoleService()
+    const roleController = new RoleController(roleService)
+    roleController.createRole(req, res, next)
+  }
+)
 
-router.put('/:id',
+router.put(
+  '/:id',
   [
     validateJwt,
     check('id', 'Invalid ID').isMongoId(),
     check('id').custom(existsRoleById),
     validateFields
-  ]
-  , roleController.updateRole)
+  ],
+  (req, res, next) => {
+    const roleService = new RoleService()
+    const roleController = new RoleController(roleService)
+    roleController.updateRole(req, res, next)
+  }
+)
 
-router.delete('/:id',
+router.delete(
+  '/:id',
   [
     validateJwt,
     haveRole('ADMIN_ROLE'),
     check('id', 'Invalid ID').isMongoId(),
     check('id').custom(existsRoleById),
     validateFields
-  ]
-  , roleController.deleteRole)
+  ],
+  (req, res, next) => {
+    const roleService = new RoleService()
+    const roleController = new RoleController(roleService)
+    roleController.deleteRole(req, res, next)
+  }
+)
 
 module.exports = router

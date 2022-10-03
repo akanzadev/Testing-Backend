@@ -63,7 +63,7 @@ class Server {
   }
 
   errorHandler () {
-    // this.app.use(expressValErrors)
+    this.app.use(expressValErrors)
     this.app.use(errorHandler)
   }
 
