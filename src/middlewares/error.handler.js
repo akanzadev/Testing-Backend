@@ -10,6 +10,7 @@ function expressValErrors (err, req, res, next) {
   if (errors) {
     const error = new Error()
     error.status = 400
+    console.log('errors', errors)
     error.message = errors.map((error) => error.msg)
     next(error)
   }

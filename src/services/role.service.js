@@ -19,6 +19,7 @@ class RoleService {
     if (!role) {
       throw new Error(`Role ${name} not found`)
     }
+    return role
   }
 
   async create (data) {

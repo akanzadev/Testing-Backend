@@ -9,18 +9,18 @@ class UserService {
 
   async list (limit, offset) {
     const [total, users] = await Promise.all([
-      User.countDocuments({ estado: true }),
-      User.find({ estado: true }).skip(Number(offset)).limit(Number(limit))
+      User.countDocuments({ status: true }),
+      User.find({ status: true }).skip(Number(offset)).limit(Number(limit)).populate('role')
     ])
     return { total, users }
   }
 
   async findOne (id) {
-    return await User.findById(id)
+    return await User.findById(id).populate('role')
   }
 
   async findOneByEmail (email) {
-    return await User.findOne({ email })
+    return await User.findOne({ email }).populate('role')
   }
 
   async create (data) {
@@ -30,11 +30,13 @@ class UserService {
     } else {
       role = await this.roleService.findByName('USER_ROLE')
     }
+    console.log('🚀 ~ file: user.service.js ~ line 32 ~ UserService ~ create ~ role', role)
+
     const user = new User({ ...data, role })
     const salt = bcryptjs.genSaltSync()
     user.password = bcryptjs.hashSync(data.password, salt)
     await user.save()
-    const token = await generateJwt(user.uid)
+    const token = await generateJwt({ uuid: user.id, name: user.name })
     return {
       token,
       user

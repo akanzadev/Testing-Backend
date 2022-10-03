@@ -18,6 +18,8 @@ class AuthService {
     if (!isValidPassword) {
       throw new Error('Email or password incorrect')
     }
+
+    console.log({ uuid: user._id, name: user.name })
     const token = await generateJwt({ uuid: user._id, name: user.name })
     return {
       user,
@@ -30,6 +32,11 @@ class AuthService {
     return {
       token
     }
+  }
+
+  async getUser (uuid) {
+    const user = await this.userService.findOne(uuid)
+    return user
   }
 }
 

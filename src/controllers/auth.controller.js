@@ -18,14 +18,10 @@ class AuthController {
 
   async renewToken (req, res, next) {
     try {
-      const { uuid, name } = req.user
-      const { token } = await this.authService.renewToken(uuid, name)
-      res.json({
-        token,
-        user: {
-          ...req.user
-        }
-      })
+      const { id, name } = req.user
+      const { token } = await this.authService.renewToken(id, name)
+      const user = await this.authService.getUser(id)
+      res.json({ token, user })
     } catch (error) {
       next(error)
     }
