@@ -12,11 +12,12 @@ const { CategoryController } = require('../controllers')
 
 const router = Router()
 
-const userService = new UserService()
-const categoryService = new CategoryService(userService)
-const categoryController = new CategoryController(categoryService)
-
-router.get('/', categoryController.getCategories)
+router.get('/', (req, res, next) => {
+  const userService = new UserService()
+  const categoryService = new CategoryService(userService)
+  const categoryController = new CategoryController(categoryService)
+  categoryController.getCategories(req, res, next)
+})
 
 router.get(
   '/:id',
@@ -25,7 +26,12 @@ router.get(
     check('id').custom(existsCategory),
     validateFields
   ],
-  categoryController.getCategory
+  (req, res, next) => {
+    const userService = new UserService()
+    const categoryService = new CategoryService(userService)
+    const categoryController = new CategoryController(categoryService)
+    categoryController.getCategory(req, res, next)
+  }
 )
 
 router.post(
@@ -36,7 +42,12 @@ router.post(
     check('description', 'Description is required').not().isEmpty(),
     validateFields
   ],
-  categoryController.createCategory
+  (req, res, next) => {
+    const userService = new UserService()
+    const categoryService = new CategoryService(userService)
+    const categoryController = new CategoryController(categoryService)
+    categoryController.createCategory(req, res, next)
+  }
 )
 
 router.put(
@@ -48,7 +59,12 @@ router.put(
     check('id').custom(existsCategory),
     validateFields
   ],
-  categoryController.updateCategory
+  (req, res, next) => {
+    const userService = new UserService()
+    const categoryService = new CategoryService(userService)
+    const categoryController = new CategoryController(categoryService)
+    categoryController.updateCategory(req, res, next)
+  }
 )
 
 router.delete(
@@ -62,7 +78,12 @@ router.delete(
     check('id').custom(existsProductsWithCategory),
     validateFields
   ],
-  categoryController.deleteCategory
+  (req, res, next) => {
+    const userService = new UserService()
+    const categoryService = new CategoryService(userService)
+    const categoryController = new CategoryController(categoryService)
+    categoryController.deleteCategory(req, res, next)
+  }
 )
 
 module.exports = router
