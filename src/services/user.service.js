@@ -10,7 +10,10 @@ class UserService {
   async list (limit, offset) {
     const [total, users] = await Promise.all([
       User.countDocuments({ status: true }),
-      User.find({ status: true }).skip(Number(offset)).limit(Number(limit)).populate('role')
+      User.find({ status: true })
+        .skip(Number(offset))
+        .limit(Number(limit))
+        .populate('role')
     ])
     return { total, users }
   }
@@ -30,8 +33,6 @@ class UserService {
     } else {
       role = await this.roleService.findByName('USER_ROLE')
     }
-    console.log('🚀 ~ file: user.service.js ~ line 32 ~ UserService ~ create ~ role', role)
-
     const user = new User({ ...data, role })
     const salt = bcryptjs.genSaltSync()
     user.password = bcryptjs.hashSync(data.password, salt)

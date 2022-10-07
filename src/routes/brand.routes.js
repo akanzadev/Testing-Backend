@@ -12,11 +12,12 @@ const { BrandController } = require('../controllers')
 
 const router = Router()
 
-const userService = new UserService()
-const brandService = new BrandService(userService)
-const brandController = new BrandController(brandService)
-
-router.get('/', brandController.getBrands)
+router.get('/', (req, res, next) => {
+  const userService = new UserService()
+  const brandService = new BrandService(userService)
+  const brandController = new BrandController(brandService)
+  brandController.getBrands(req, res, next)
+})
 
 router.get(
   '/:id',
@@ -25,7 +26,12 @@ router.get(
     check('id').custom(existsBrand),
     validateFields
   ],
-  brandController.getBrand
+  (req, res, next) => {
+    const userService = new UserService()
+    const brandService = new BrandService(userService)
+    const brandController = new BrandController(brandService)
+    brandController.getBrand(req, res, next)
+  }
 )
 
 router.post(
@@ -36,7 +42,12 @@ router.post(
     check('description', 'Description is required').not().isEmpty(),
     validateFields
   ],
-  brandController.createBrand
+  (req, res, next) => {
+    const userService = new UserService()
+    const brandService = new BrandService(userService)
+    const brandController = new BrandController(brandService)
+    brandController.createBrand(req, res, next)
+  }
 )
 
 router.put(
@@ -47,7 +58,12 @@ router.put(
     check('id').custom(existsBrand),
     validateFields
   ],
-  brandController.updateBrand
+  (req, res, next) => {
+    const userService = new UserService()
+    const brandService = new BrandService(userService)
+    const brandController = new BrandController(brandService)
+    brandController.updateBrand(req, res, next)
+  }
 )
 
 router.delete(
@@ -61,7 +77,12 @@ router.delete(
     check('id').custom(existsProductsWithBrand),
     validateFields
   ],
-  brandController.deleteBrand
+  (req, res, next) => {
+    const userService = new UserService()
+    const brandService = new BrandService(userService)
+    const brandController = new BrandController(brandService)
+    brandController.deleteBrand(req, res, next)
+  }
 )
 
 module.exports = router
