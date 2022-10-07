@@ -51,7 +51,7 @@ class ProductService {
   }
 
   async create (data) {
-    const user = this.userService.findOne(data.user)
+    const user = await this.userService.findOne(data.user)
     await this.findProductForName(data.name)
     const category = await this.categoryService.findOne(data.category)
     const brand = await this.brandService.findOne(data.brand)

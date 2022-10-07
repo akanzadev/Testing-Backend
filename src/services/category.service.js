@@ -17,9 +17,7 @@ class CategoryService {
   }
 
   async findOne (id) {
-    console.log('🚀 ~ file: category.service.js ~ line 20 ~ CategoryService ~ findOne ~ id', id)
     const category = await Category.findOne({ _id: id, status: true })
-    console.log('🚀 ~ file: category.service.js ~ line 21 ~ CategoryService ~ findOne ~ category', category)
     if (!category) throw new Error('Category not found or deleted')
     return category
   }
