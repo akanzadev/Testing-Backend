@@ -16,7 +16,8 @@ const validateJwt = async (req, res, next) => {
     if (!user.status) {
       return next(new Error('El usuario no está activo'))
     }
-    req.user = user
+
+    req.user = { uuid }
 
     next()
   } catch (error) {
