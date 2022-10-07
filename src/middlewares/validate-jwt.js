@@ -9,7 +9,7 @@ const validateJwt = async (req, res, next) => {
     if (!token) { return next(new Error('No hay token en la petición')) }
 
     const { uuid } = jwt.verify(token, process.env.SECRETKEY)
-    const user = await User.findById({ _id: uuid })
+    const user = await User.findById({ _id: uuid }).populate('role', ['name'])
 
     if (!user) { return next(new Error('No existe el usuario')) }
 
@@ -17,7 +17,7 @@ const validateJwt = async (req, res, next) => {
       return next(new Error('El usuario no está activo'))
     }
 
-    req.user = { uuid }
+    req.user = user
 
     next()
   } catch (error) {

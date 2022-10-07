@@ -24,14 +24,9 @@ class CategoryController {
   }
 
   async createCategory (req, res, next) {
-    console.log(
-      '🚀 ~ file: category.controller.js ~ line 28 ~ CategoryController ~ createCategory ~ req',
-      req
-    )
     try {
       const { name, description } = req.body
-      const { uuid: user } = req.user
-      console.log({ name, description, user })
+      const { _id: user } = req.user
       const category = await this.categoryService.create({
         name,
         description,
@@ -46,11 +41,9 @@ class CategoryController {
   async updateCategory (req, res, next) {
     try {
       const id = req.params.id
-      const { description } = req.body
-      const category = await this.categoryService.update(id, {
-        description
-      })
-      res.status(200).json({ category })
+      const data = req.body
+      const category = await this.categoryService.update(id, data)
+      res.status(200).json(category)
     } catch (error) {
       next(error)
     }

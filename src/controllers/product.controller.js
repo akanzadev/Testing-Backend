@@ -35,7 +35,7 @@ class ProductController {
 
   async getProductByUser (req, res, next) {
     try {
-      const { uuid: user } = req.user
+      const { _id: user } = req.user
       const product = await this.productService.findForUser(user)
       res.status(200).json(product)
     } catch (error) {
@@ -46,7 +46,7 @@ class ProductController {
   async createProduct (req, res, next) {
     try {
       const { name, description, price, category, brand } = req.body
-      const { uuid: user } = req.user
+      const { _id: user } = req.user
       const product = await this.productService.create({
         name,
         description,

@@ -19,7 +19,6 @@ class AuthService {
       throw new Error('Email or password incorrect')
     }
 
-    console.log({ uuid: user._id, name: user.name })
     const token = await generateJwt({ uuid: user._id, name: user.name })
     return {
       user,

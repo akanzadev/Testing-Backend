@@ -55,7 +55,6 @@ router.put(
   [
     validateJwt,
     check('id', 'Invalid ID').isMongoId(),
-    check('description', 'Description is required').not().isEmpty(),
     check('id').custom(existsCategory),
     validateFields
   ],

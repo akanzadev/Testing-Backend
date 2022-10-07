@@ -27,7 +27,7 @@ class BrandController {
   async createBrand (req, res, next) {
     try {
       const { name, description } = req.body
-      const { uuid: user } = req.user
+      const { _id: user } = req.user
       const brand = await this.brandService.create({
         name,
         description,

@@ -17,8 +17,10 @@ class CategoryService {
   }
 
   async findOne (id) {
-    const category = await Category.findById(id, { status: true })
-    if (!category) throw new Error('Category not found')
+    console.log('🚀 ~ file: category.service.js ~ line 20 ~ CategoryService ~ findOne ~ id', id)
+    const category = await Category.findOne({ _id: id, status: true })
+    console.log('🚀 ~ file: category.service.js ~ line 21 ~ CategoryService ~ findOne ~ category', category)
+    if (!category) throw new Error('Category not found or deleted')
     return category
   }
 
@@ -41,15 +43,29 @@ class CategoryService {
       const user = this.userService.findOne(data.user)
       if (!user) throw new Error('User not found')
     }
-    return await Category.findByIdAndUpdate(id, data, { new: true })
+    if (!data.name) {
+      return {
+        message: 'Category updated',
+        category: await Category.findByIdAndUpdate(id, data, { new: true })
+      }
+    }
+    const category = await this.findOne(id)
+    if (category.name === data.name) { throw new Error('Name for category already in use') }
+    return {
+      message: 'Category updated',
+      category: await Category.findByIdAndUpdate(id, data, { new: true })
+    }
   }
 
   async delete (id) {
-    return await Category.findByIdAndUpdate(
-      id,
-      { status: false },
-      { new: true }
-    )
+    return {
+      message: 'Category deleted',
+      category: await Category.findByIdAndUpdate(
+        id,
+        { status: false },
+        { new: true }
+      )
+    }
   }
 }
 

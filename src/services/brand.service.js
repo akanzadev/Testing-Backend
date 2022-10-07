@@ -9,13 +9,16 @@ class BrandService {
   async list (limit, offset) {
     const [total, brands] = await Promise.all([
       Brand.countDocuments({ status: true }),
-      Brand.find({ estado: true }).skip(Number(offset)).limit(Number(limit))
+      Brand.find({ status: true })
+        .populate('user', ['_id']).skip(Number(offset)).limit(Number(limit))
     ])
     return { total, brands }
   }
 
   async findOne (id) {
-    return await Brand.findById(id)
+    const brand = await Brand.findOne({ _id: id, status: true })
+    if (!brand) throw new Error('Brand not found or deleted')
+    return brand
   }
 
   async create (data) {
@@ -31,7 +34,18 @@ class BrandService {
       const user = this.userService.findOne(data.user)
       if (!user) throw new Error('User not found')
     }
-    return await Brand.findByIdAndUpdate(id, data, { new: true })
+    if (!data.name) {
+      return {
+        message: 'Brand updated',
+        category: await Brand.findByIdAndUpdate(id, data, { new: true })
+      }
+    }
+    const brand = await this.findOne(id)
+    if (brand.name === data.name) { throw new Error('Name for brand already in use') }
+    return {
+      message: 'Brand updated',
+      category: await Brand.findByIdAndUpdate(id, data, { new: true })
+    }
   }
 
   async delete (id) {
