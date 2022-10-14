@@ -1,4 +1,4 @@
-const { Category, Role, Product, Marca: Brand, User } = require('./../models')
+const { Category, Role, Product, Brand, User } = require('./../models')
 
 const existsRole = async (role = 'USER_ROLE') => {
   const existsRole = await Role.findOne({ name: role })
@@ -59,10 +59,6 @@ const existsProduct = async (id = '') => {
   }
 }
 
-/**
- * validar coleciones permitidas
- */
-
 const coleccionesPermitidas = (coleccion = '', colecciones = []) => {
   const incluida = colecciones.includes(coleccion)
 
@@ -118,7 +114,7 @@ const existsBrand = async (id = '') => {
 
 const brandIsActive = async (id = '') => {
   const brand = await Brand.findById(id)
-  if (!brand.estado) {
+  if (!brand.status) {
     throw new Error('This brand is not active')
   }
 }

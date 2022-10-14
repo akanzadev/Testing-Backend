@@ -45,12 +45,13 @@ class ProductController {
 
   async createProduct (req, res, next) {
     try {
-      const { name, description, price, category, brand } = req.body
+      const { name, description, stock, price, category, brand } = req.body
       const { _id: user } = req.user
       const product = await this.productService.create({
         name,
         description,
-        price,
+        stock: stock || 0,
+        price: price || 0,
         category,
         brand,
         user

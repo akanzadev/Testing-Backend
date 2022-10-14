@@ -6,8 +6,11 @@ const ProductSchema = mongoose.Schema({
     require: [true, 'Name is required'],
     unique: true
   },
-  img: { type: String },
-  descripcion: { type: String },
+  img: {
+    type: String,
+    default: 'https://apply.sts.net.pk/assets/images/default-upload-image.jpg'
+  },
+  description: { type: String, require: [true, 'Description is required'] },
   price: {
     type: Number,
     default: 0

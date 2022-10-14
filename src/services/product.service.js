@@ -52,13 +52,14 @@ class ProductService {
 
   async create (data) {
     const user = await this.userService.findOne(data.user)
-    await this.findProductForName(data.name)
+    const product = await Product.findOne({ name: data.name, status: true })
+    if (product) throw new Error('Product already exists')
     const category = await this.categoryService.findOne(data.category)
     const brand = await this.brandService.findOne(data.brand)
-
     const newProduct = new Product({
       name: data.name,
       description: data.description,
+      stock: data.stock,
       price: data.price,
       category: category._id,
       brand: brand._id,
