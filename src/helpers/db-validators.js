@@ -1,4 +1,4 @@
-const { Category, Role, Product, Brand, User } = require('./../models')
+const { Category, Role, Product, Brand, User, Provider } = require('./../models')
 
 const existsRole = async (role = 'USER_ROLE') => {
   const existsRole = await Role.findOne({ name: role })
@@ -21,6 +21,13 @@ const existsUserById = async (id = '') => {
   }
 }
 
+const existsProviderById = async (id = '') => {
+  const existsProvider = await Provider.findById(id)
+  if (!existsProvider) {
+    throw new Error(`The provider with id ${id} does not exist`)
+  }
+}
+
 const existsCategory = async (id = '') => {
   const existsCategory = await Category.findById(id)
   if (!existsCategory) {
@@ -37,7 +44,7 @@ const categoryIsActive = async (id = '') => {
 
 const estadoActivoProducto = async (id = '') => {
   const activoProducto = await Product.findById(id)
-  if (!activoProducto.estado) {
+  if (!activoProducto.status) {
     throw new Error('El estado es false, no existe!! ')
   }
 }
@@ -143,5 +150,6 @@ module.exports = {
   existsProductsWithBrand,
   existsRoleById,
   existsUserById,
-  isVaidIdProducto
+  isVaidIdProducto,
+  existsProviderById
 }

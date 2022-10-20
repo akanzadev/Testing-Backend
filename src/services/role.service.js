@@ -5,7 +5,7 @@ class RoleService {
   async list (limit, offset) {
     const [total, roles] = await Promise.all([
       Role.countDocuments({ status: true }),
-      Role.find({ estado: true }).skip(Number(offset)).limit(Number(limit))
+      Role.find({ status: true }).skip(Number(offset)).limit(Number(limit))
     ])
     return { total, roles }
   }

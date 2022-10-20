@@ -53,7 +53,7 @@ class UserService {
   }
 
   async delete (id) {
-    return await User.findByIdAndUpdate(id, { estado: false }, { new: true })
+    return await User.findByIdAndUpdate(id, { status: false }, { new: true })
   }
 }
 
