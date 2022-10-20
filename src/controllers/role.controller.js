@@ -7,8 +7,8 @@ class RoleController {
   async getRoles (req, res, next) {
     try {
       const { limit = 10, offset = 0 } = req.query
-      const roles = await this.roleService.list(limit, offset)
-      res.status(200).json(roles)
+      const rta = await this.roleService.list(limit, offset)
+      res.status(200).json({ ok: true, message: 'Roles listed', ...rta })
     } catch (error) {
       next(error)
     }
@@ -17,8 +17,8 @@ class RoleController {
   async getRole (req, res, next) {
     try {
       const id = req.params.id
-      const role = await this.roleService.get(id)
-      res.status(200).json(role)
+      const rta = await this.roleService.findOne(id)
+      res.status(200).json({ ok: true, message: 'Role listed', ...rta })
     } catch (error) {
       next(error)
     }
@@ -27,11 +27,8 @@ class RoleController {
   async createRole (req, res, next) {
     try {
       const { name, description } = req.body
-      const role = await this.roleService.create({
-        name,
-        description
-      })
-      res.status(200).json(role)
+      const rta = await this.roleService.create({ name, description })
+      res.status(200).json({ ok: true, message: 'Role created', ...rta })
     } catch (error) {
       next(error)
     }
@@ -41,10 +38,8 @@ class RoleController {
     try {
       const id = req.params.id
       const { description } = req.body
-      const role = await this.roleService.update(id, {
-        description
-      })
-      res.status(200).json(role)
+      const rta = await this.roleService.update(id, { description })
+      res.status(200).json({ ok: true, message: 'Role updated', ...rta })
     } catch (error) {
       next(error)
     }
@@ -53,8 +48,8 @@ class RoleController {
   async deleteRole (req, res, next) {
     try {
       const { id } = req.params
-      const role = await this.roleService.delete(id)
-      res.status(200).json(role)
+      const rta = await this.roleService.delete(id)
+      res.status(200).json({ ok: true, message: 'Role deleted', ...rta })
     } catch (error) {
       next(error)
     }

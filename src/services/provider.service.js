@@ -19,7 +19,9 @@ class ProviderService {
 
   async findOne (id) {
     const provider = await Provider.findById(id).populate('role')
-    if (!provider) { throw new Error(`Provider ${id} not found`) }
+    if (!provider) {
+      throw new Error(`Provider ${id} not found`)
+    }
     return { provider }
   }
 
@@ -38,20 +40,25 @@ class ProviderService {
     await provider.save()
     // const token = await generateJwt({ uuid: provider.id, name: provider.name })
     return {
-    //   token,
+      //   token,
       provider
     }
   }
 
   async update (id, data) {
-    const provider = await Provider.findByIdAndUpdate(id, data, { new: true }).populate(
-      'role'
-    )
+    const provider = await Provider.findByIdAndUpdate(id, data, {
+      new: true
+    }).populate('role')
     return { provider }
   }
 
   async delete (id) {
-    return await Provider.findByIdAndUpdate(id, { status: false }, { new: true })
+    const provider = await Provider.findByIdAndUpdate(
+      id,
+      { status: false },
+      { new: true }
+    )
+    return { provider }
   }
 }
 

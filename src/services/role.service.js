@@ -1,4 +1,3 @@
-
 const { Role } = require('../models')
 
 class RoleService {
@@ -11,7 +10,11 @@ class RoleService {
   }
 
   async findOne (id) {
-    return await Role.findById(id)
+    const role = await Role.findById(id)
+    if (!role) {
+      throw new Error(`Role ${id} not found`)
+    }
+    return { role }
   }
 
   async findByName (name) {
@@ -29,11 +32,17 @@ class RoleService {
   }
 
   async update (id, data) {
-    return await Role.findByIdAndUpdate(id, data, { new: true })
+    const role = await Role.findByIdAndUpdate(id, data, { new: true })
+    return { role }
   }
 
   async delete (id) {
-    return await Role.findByIdAndUpdate(id, { status: false }, { new: true })
+    const role = await Role.findByIdAndUpdate(
+      id,
+      { status: false },
+      { new: true }
+    )
+    return { role }
   }
 }
 
