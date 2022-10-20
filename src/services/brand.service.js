@@ -16,9 +16,9 @@ class BrandService {
   }
 
   async findOne (id) {
-    const brand = await Brand.findOne({ _id: id, status: true })
+    const brand = await Brand.findOne({ _id: id, status: true }).populate('user', ['_id'])
     if (!brand) throw new Error('Brand not found or deleted')
-    return brand
+    return { brand }
   }
 
   async create (data) {
@@ -40,16 +40,16 @@ class BrandService {
         category: await Brand.findByIdAndUpdate(id, data, { new: true })
       }
     }
-    const brand = await this.findOne(id)
-    if (brand.name === data.name) { throw new Error('Name for brand already in use') }
-    return {
-      message: 'Brand updated',
-      category: await Brand.findByIdAndUpdate(id, data, { new: true })
-    }
+    const brandExists = await this.findOne(id)
+    if (brandExists.name === data.name) { throw new Error('Name for brand already in use') }
+
+    const brand = await Brand.findByIdAndUpdate(id, data, { new: true })
+    return { brand }
   }
 
   async delete (id) {
-    return await Brand.findByIdAndUpdate(id, { status: false }, { new: true })
+    const brand = await Brand.findByIdAndUpdate(id, { status: false }, { new: true })
+    return { brand }
   }
 }
 

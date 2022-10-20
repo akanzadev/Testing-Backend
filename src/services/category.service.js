@@ -55,10 +55,7 @@ class CategoryService {
   }
 
   async delete (id) {
-    const category = await Category.findByIdAndUpdate(
-      id,
-      { status: false },
-      { new: true }
+    const category = await Category.findByIdAndUpdate(id, { status: false }, { new: true }
     )
     return { category }
   }
