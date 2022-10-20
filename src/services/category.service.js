@@ -17,9 +17,9 @@ class CategoryService {
   }
 
   async findOne (id) {
-    const category = await Category.findOne({ _id: id, status: true })
+    const category = await Category.findOne({ _id: id, status: true }).populate('user', ['_id'])
     if (!category) throw new Error('Category not found or deleted')
-    return category
+    return { category }
   }
 
   async findForName (name) {
@@ -31,9 +31,9 @@ class CategoryService {
   async create (data) {
     const user = this.userService.findOne(data.user)
     if (!user) throw new Error('User not found')
-    const newCategory = new Category(data)
-    await newCategory.save()
-    return newCategory
+    const category = new Category(data)
+    await category.save()
+    return { category }
   }
 
   async update (id, data) {
@@ -47,23 +47,20 @@ class CategoryService {
         category: await Category.findByIdAndUpdate(id, data, { new: true })
       }
     }
-    const category = await this.findOne(id)
-    if (category.name === data.name) { throw new Error('Name for category already in use') }
-    return {
-      message: 'Category updated',
-      category: await Category.findByIdAndUpdate(id, data, { new: true })
-    }
+    const categoryExist = await this.findOne(id)
+    if (categoryExist.name === data.name) { throw new Error('Name for category already in use') }
+
+    const category = await Category.findByIdAndUpdate(id, data, { new: true })
+    return { category }
   }
 
   async delete (id) {
-    return {
-      message: 'Category deleted',
-      category: await Category.findByIdAndUpdate(
-        id,
-        { status: false },
-        { new: true }
-      )
-    }
+    const category = await Category.findByIdAndUpdate(
+      id,
+      { status: false },
+      { new: true }
+    )
+    return { category }
   }
 }
 

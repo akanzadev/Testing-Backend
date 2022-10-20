@@ -6,8 +6,8 @@ class CategoryController {
   async getCategories (req, res, next) {
     try {
       const { limit = 10, offset = 0 } = req.query
-      const categories = await this.categoryService.list(limit, offset)
-      res.status(200).json(categories)
+      const rta = await this.categoryService.list(limit, offset)
+      res.status(200).json({ ok: true, message: 'Categories listed', ...rta })
     } catch (error) {
       next(error)
     }
@@ -16,8 +16,8 @@ class CategoryController {
   async getCategory (req, res, next) {
     try {
       const id = req.params.id
-      const category = await this.categoryService.get(id)
-      res.status(200).json(category)
+      const rta = await this.categoryService.findOne(id)
+      res.status(200).json({ ok: true, message: 'Category listed', ...rta })
     } catch (error) {
       next(error)
     }
@@ -27,12 +27,12 @@ class CategoryController {
     try {
       const { name, description } = req.body
       const { _id: user } = req.user
-      const category = await this.categoryService.create({
+      const rta = await this.categoryService.create({
         name,
         description,
         user
       })
-      res.status(200).json(category)
+      res.status(200).json({ ok: true, message: 'Category created', ...rta })
     } catch (error) {
       next(error)
     }
@@ -42,8 +42,8 @@ class CategoryController {
     try {
       const id = req.params.id
       const data = req.body
-      const category = await this.categoryService.update(id, data)
-      res.status(200).json(category)
+      const rta = await this.categoryService.update(id, data)
+      res.status(200).json({ ok: true, message: 'Category updated', ...rta })
     } catch (error) {
       next(error)
     }
@@ -52,8 +52,8 @@ class CategoryController {
   async deleteCategory (req, res, next) {
     try {
       const { id } = req.params
-      const category = await this.categoryService.delete(id)
-      res.status(200).json(category)
+      const rta = await this.categoryService.delete(id)
+      res.status(200).json({ ok: true, message: 'Category deleted', ...rta })
     } catch (error) {
       next(error)
     }
