@@ -66,6 +66,13 @@ const existsProduct = async (id = '') => {
   }
 }
 
+const existsProductWithName = async (name = '') => {
+  const existsProduct = await Product.findOne({ name })
+  if (existsProduct) {
+    throw new Error(`The product with name ${name} already exists`)
+  }
+}
+
 const coleccionesPermitidas = (coleccion = '', colecciones = []) => {
   const incluida = colecciones.includes(coleccion)
 
@@ -151,5 +158,6 @@ module.exports = {
   existsRoleById,
   existsUserById,
   isVaidIdProducto,
-  existsProviderById
+  existsProviderById,
+  existsProductWithName
 }

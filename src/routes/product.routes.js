@@ -40,8 +40,7 @@ router.get(
     check('id', 'Invalid ID').isMongoId(),
     check('id').custom(existsProduct),
     validateFields
-  ],
-  (req, res, next) => {
+  ], (req, res, next) => {
     const roleService = new RoleService()
     const userService = new UserService(roleService)
     const categoryService = new CategoryService(userService)
@@ -57,31 +56,34 @@ router.get(
   }
 )
 
-/* router.get(
+router.get(
+  '/search/:name',
+  [
+    check('name', 'Invalid name').isString(),
+    validateFields
+  ], (req, res, next) => {
+    const roleService = new RoleService()
+    const userService = new UserService(roleService)
+    const categoryService = new CategoryService(userService)
+    const brandService = new BrandService(userService)
+    const productService = new ProductService(
+      userService,
+      categoryService,
+      brandService
+    )
+
+    const productController = new ProductController(productService)
+    productController.getProductsByName(req, res, next)
+  }
+)
+/*
+router.get(
   '/category/:name',
   [check('name').custom(existeProductoPorNombreDeCategoria), validateFields],
   productController.getProductByCategory
 )
 
-router.get(
-  '/:name',
-  [
-    check('nombre', 'El nombre del producto no es valido').not().isEmpty(),
-    check('nombre').custom(existeProducto),
-    validateFields
-  ],
-  productController.getProductByName
-) */
-
-/* router.get(
-  '/user/:id',
-  [
-    check('id', 'El id del producto no es ID valido').isMongoId(),
-    check('id').custom(existeUsuariPorId),
-    validateFields
-  ],
-  productController.getProductByUser
-) */
+*/
 
 router.post(
   '/',
@@ -98,8 +100,7 @@ router.post(
     check('brand', 'Brand is required and must be a valid ID').isMongoId(),
     check('brand').custom(existsBrand),
     validateFields
-  ],
-  (req, res, next) => {
+  ], (req, res, next) => {
     const roleService = new RoleService()
     const userService = new UserService(roleService)
     const categoryService = new CategoryService(userService)
@@ -113,20 +114,28 @@ router.post(
     productController.createProduct(req, res, next)
   }
 )
-/*
+
 router.put(
   '/:id',
   [
     validateJwt,
-    check('id', 'El id del producto no es ID valido').isMongoId(),
-    check('id').custom(existeProducto),
-    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    check('precio', 'El precio es obligatorio').not().isEmpty(),
-    check('descripcion', 'El descripcion es obligatorio').not().isEmpty(),
+    check('id', 'Invalid ID').isMongoId(),
+    check('id').custom(existsProduct),
     validateFields
-  ],
-  actualizarProducto
-) */
+  ], (req, res, next) => {
+    const roleService = new RoleService()
+    const userService = new UserService(roleService)
+    const categoryService = new CategoryService(userService)
+    const brandService = new BrandService(userService)
+    const productService = new ProductService(
+      userService,
+      categoryService,
+      brandService
+    )
+    const productController = new ProductController(productService)
+    productController.updateProduct(req, res, next)
+  }
+)
 
 router.delete(
   '/:id',

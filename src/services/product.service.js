@@ -25,20 +25,27 @@ class ProductService {
       .populate('category', ['name'])
       .populate('brand', ['name'])
     if (!product) throw new Error('Product not found')
-    return product
+    return { product }
   }
 
   async findForName (name) {
-    const product = await Product.findOne({ name, status: true })
-    if (!product) throw new Error('Product not found')
-    return product
+    const [total, products] = await Promise.all([
+      Product.countDocuments({ name: new RegExp(name, 'i'), status: true }),
+      Product.find({ name: { $regex: name, $options: 'i' }, status: true })
+        .populate('category', ['name'])
+        .populate('brand', ['name'])
+    ])
+    return { total, products }
   }
 
   async findForUser (id) {
-    const products = await Product.find({ user: id, status: true })
-      .populate('category', ['name'])
-      .populate('brand', ['name'])
-    return products
+    const [total, products] = await Promise.all([
+      Product.countDocuments({ user: id, status: true }),
+      Product.find({ user: id, status: true })
+        .populate('category', ['name'])
+        .populate('brand', ['name'])
+    ])
+    return { total, products }
   }
 
   async findForCategory (name) {
@@ -52,11 +59,11 @@ class ProductService {
 
   async create (data) {
     const user = await this.userService.findOne(data.user)
-    const product = await Product.findOne({ name: data.name, status: true })
-    if (product) throw new Error('Product already exists')
+    const productExists = await Product.findOne({ name: data.name, status: true })
+    if (productExists) throw new Error('Product already exists')
     const category = await this.categoryService.findOne(data.category)
     const brand = await this.brandService.findOne(data.brand)
-    const newProduct = new Product({
+    const product = new Product({
       name: data.name,
       description: data.description,
       stock: data.stock,
@@ -65,11 +72,22 @@ class ProductService {
       brand: brand._id,
       user: user._id
     })
-    await newProduct.save()
-    return newProduct
+    await product.save()
+    return { product }
   }
 
   async update (id, data) {
+    if (data.name) {
+      const currentProduct = await Product.findOne({ _id: id, status: true })
+      if (currentProduct.name !== data.name) {
+        const productExists = await Product.findOne({
+          name: data.name,
+          status: true
+        })
+        if (productExists) throw new Error('Product already exists')
+      }
+    }
+
     if (data.user) {
       const user = this.userService.findOne(data.user)
       if (!user) throw new Error('User not found')
@@ -82,15 +100,18 @@ class ProductService {
       const brand = this.brandService.findOne(data.brand)
       if (!brand) throw new Error('Brand not found')
     }
-    return await Product.findByIdAndUpdate(id, data, { new: true })
+
+    const product = await Product.findByIdAndUpdate(id, data, { new: true })
+    return { product }
   }
 
   async delete (id) {
-    return await Product.findByIdAndUpdate(
+    const product = await Product.findByIdAndUpdate(
       id,
       { status: false },
       { new: true }
     )
+    return { product }
   }
 }
 
