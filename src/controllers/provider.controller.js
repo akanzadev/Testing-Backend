@@ -25,13 +25,14 @@ class ProviderController {
 
   async createProvider (req, res, next) {
     try {
-      const { name, email, role, image, address } = req.body
+      const { name, email, role, image, address, phone } = req.body
       const rta = await this.providerService.create({
         name,
         email,
         address,
         role,
-        image
+        image,
+        phone
       })
       res.status(200).json({ ok: true, message: 'Provider created', ...rta })
     } catch (error) {
