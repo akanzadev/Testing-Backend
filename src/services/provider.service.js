@@ -9,7 +9,7 @@ class ProviderService {
   async list (limit, offset) {
     const [total, providers] = await Promise.all([
       Provider.countDocuments({ status: true }),
-      Provider.find({ status: true })
+      Provider.find()
         .skip(Number(offset))
         .limit(Number(limit))
         .populate('role')

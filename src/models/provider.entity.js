@@ -34,7 +34,7 @@ const ProviderSchema = mongoose.Schema({
 })
 
 ProviderSchema.methods.toJSON = function () {
-  const { _id, __v, status, ...rest } = this.toObject()
+  const { _id, __v, ...rest } = this.toObject()
   rest.uuid = _id
   return rest
 }
