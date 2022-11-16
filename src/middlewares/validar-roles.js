@@ -1,9 +1,5 @@
-const Roles = require('../models/role.entity')
-
 const haveRole = (...roles) => {
   return (req, res, next) => {
-    console.log('🚀 ~ file: validar-roles.js ~ line 5 ~ return ~ req', req.user)
-
     if (!req.user) {
       return next(new Error('Error validating role'))
     }

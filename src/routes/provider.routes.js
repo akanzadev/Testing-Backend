@@ -3,8 +3,8 @@ const { check } = require('express-validator')
 const { existsRole, emailInUse, existsProviderById } = require('../helpers')
 const { validateJwt, haveRole, validateFields } = require('../middlewares')
 
-const { ProviderService, RoleService } = require('../services')
-const { ProviderController } = require('../controllers')
+const { ProviderService, RoleService, UserService, CategoryService, BrandService, ProductService, OrderService } = require('../services')
+const { ProviderController, OrderController } = require('../controllers')
 
 const router = Router()
 
@@ -27,6 +27,35 @@ router.get(
     const providerService = new ProviderService(roleService)
     const providerController = new ProviderController(providerService)
     providerController.getProvider(req, res, next)
+  }
+)
+
+router.get(
+  '/:id/orders',
+  [
+    check('id', 'Invalid ID').isMongoId(),
+    check('id').custom(existsProviderById),
+    validateFields
+  ], (req, res, next) => {
+    const roleService = new RoleService()
+    const userService = new UserService(roleService)
+    const categoryService = new CategoryService(userService)
+    const brandService = new BrandService(userService)
+    const productService = new ProductService(
+      userService,
+      categoryService,
+      brandService
+    )
+
+    const providerService = new ProviderService(roleService)
+    const orderService = new OrderService(
+      userService,
+      providerService,
+      productService
+    )
+
+    const orderController = new OrderController(orderService)
+    orderController.getOrdersByProvider(req, res, next)
   }
 )
 

@@ -38,6 +38,13 @@ class ProductService {
     return { total, products }
   }
 
+  async validateProducts (items) {
+    items.forEach(async ({ product, quantity }) => {
+      const productFound = await Product.findOne({ _id: product, status: true })
+      if (!productFound) throw new Error('One or more products are invalid')
+    })
+  }
+
   async findForUser (id) {
     const [total, products] = await Promise.all([
       Product.countDocuments({ user: id, status: true }),

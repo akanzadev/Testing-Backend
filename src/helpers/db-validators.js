@@ -1,4 +1,12 @@
-const { Category, Role, Product, Brand, User, Provider } = require('./../models')
+const {
+  Category,
+  Role,
+  Product,
+  Brand,
+  User,
+  Provider,
+  Order
+} = require('./../models')
 
 const existsRole = async (role = 'USER_ROLE') => {
   const existsRole = await Role.findOne({ name: role })
@@ -63,6 +71,13 @@ const existsProduct = async (id = '') => {
   const existsProduct = await Product.findById(id)
   if (!existsProduct) {
     throw new Error(`The product with id ${id} does not exist`)
+  }
+}
+
+const existsOrder = async (id = '') => {
+  const existsOrder = await Order.findById(id)
+  if (!existsOrder) {
+    throw new Error(`The Order with id ${id} does not exist`)
   }
 }
 
@@ -159,5 +174,6 @@ module.exports = {
   existsUserById,
   isVaidIdProducto,
   existsProviderById,
-  existsProductWithName
+  existsProductWithName,
+  existsOrder
 }

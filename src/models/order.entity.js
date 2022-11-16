@@ -6,11 +6,18 @@ const OrderSchema = mongoose.Schema({
     ref: 'User',
     required: [true, 'User is required']
   },
-  products: [{
+  items: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'OrderItem',
+      required: [true, 'Order Entity is required']
+    }
+  ],
+  provider: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product',
-    required: [true, 'Product is required']
-  }],
+    ref: 'Provider',
+    required: [true, 'Provider is required']
+  },
   status: {
     type: Boolean,
     default: true

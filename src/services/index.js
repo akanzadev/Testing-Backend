@@ -5,6 +5,7 @@ const { UserService } = require('./user.service')
 const { ProductService } = require('./product.service')
 const { AuthService } = require('./auth.service')
 const { ProviderService } = require('./provider.service')
+const { OrderService } = require('./order.service')
 
 module.exports = {
   CategoryService,
@@ -13,5 +14,6 @@ module.exports = {
   UserService,
   ProductService,
   AuthService,
-  ProviderService
+  ProviderService,
+  OrderService
 }
