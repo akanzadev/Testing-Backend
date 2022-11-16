@@ -62,6 +62,7 @@ router.get(
 router.post(
   '/',
   [
+    check('email', 'Email is required').not().isEmpty(),
     check('email', 'Invalid email').isEmail(),
     check('email').custom(emailInUse),
     check('name', 'Name is required').not().isEmpty(),

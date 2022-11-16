@@ -7,6 +7,8 @@ function logErrors (err, req, res, next) {
 
 function expressValErrors (err, req, res, next) {
   const { errors = false } = err
+  console.log(err.errors)
+  console.log(errors)
   if (errors) {
     const error = new Error()
     error.status = 400
@@ -18,7 +20,7 @@ function expressValErrors (err, req, res, next) {
 }
 
 function errorHandler (err, req, res, next) {
-  res.status(500).json({
+  res.status(err.status || 500).json({
     ok: false,
     message: err.message,
     stack: err.stack

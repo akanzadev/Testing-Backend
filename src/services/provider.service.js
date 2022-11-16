@@ -36,6 +36,10 @@ class ProviderService {
     } else {
       role = await this.roleService.findByName('PROVIDER_ROLE')
     }
+    if (data.email) {
+      const provider = await Provider.findOne({ email: data.email })
+      if (provider) { throw new Error(`Email ${data.email} already exists`) }
+    }
     const provider = new Provider({ ...data, role })
     await provider.save()
     // const token = await generateJwt({ uuid: provider.id, name: provider.name })

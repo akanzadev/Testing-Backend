@@ -8,7 +8,7 @@ const ProviderSchema = mongoose.Schema({
   email: {
     type: String,
     required: [true, 'Email is required'],
-    unique: true
+    unique: [true, 'Email already exists']
   },
   address: {
     type: String,

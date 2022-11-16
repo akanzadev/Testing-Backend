@@ -4,7 +4,6 @@ const http = require('http')
 const fileUpload = require('express-fileupload')
 const morgan = require('morgan')
 
-const { dbConnection } = require('../database/connection.js')
 const { errorHandler, expressValErrors } = require('../middlewares')
 
 class Server {
@@ -25,17 +24,10 @@ class Server {
       brands: '/api/brands',
       orders: '/api/orders'
     }
-    this.conectarBD()
 
     this.middlewares()
-
     this.mountRoutes()
-
     this.errorHandler()
-  }
-
-  async conectarBD () {
-    await dbConnection()
   }
 
   middlewares () {
