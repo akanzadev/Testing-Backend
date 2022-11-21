@@ -17,11 +17,11 @@ services:
     container_name: locust-master
     ports:
       - "8089:8089"
-    command: "--host=https://e24d-179-6-160-198.ngrok.io --master"
+    command: "--host=https://testing-backend.vercel.app --master"
   locust-slave:
     depends_on:
       - locust-master
     build:
       context: .
       dockerfile: locust/Dockerfile
-    command: "--host=https://e24d-179-6-160-198.ngrok.io --master-host=locust-master --slave"
+    command: "--host=https://testing-backend.vercel.app --master-host=locust-master --slave"
