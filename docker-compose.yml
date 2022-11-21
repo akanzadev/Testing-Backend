@@ -10,6 +10,7 @@ services:
       - "27017:27017"
     volumes:
       - ./mongo_data:/data/db
+
   locust-master:
     build:
       context: .
@@ -18,6 +19,7 @@ services:
     ports:
       - "8089:8089"
     command: "--host=https://testing-backend.vercel.app --master"
+
   locust-slave:
     depends_on:
       - locust-master
