@@ -8,41 +8,49 @@ const { signIn } = require('../../../../test/setup')
 const server = new Server()
 const app = server.app
 
-describe('Providers Routes For List', () => {
+describe('CP-09', () => {
   it('List Providers', async () => {
-    try {
-      const { jwt } = await signIn()
-      await request(app).get('/api/providers').set('x-token', jwt).expect(200)
-    } catch (error) {
-      console.log(error)
-    }
+    const res = await request(app).get('/api/providers').expect(200)
+
+    expect(res.body.total).not.toBeUndefined()
+    expect(res.body.providers).not.toBeUndefined()
+    expect(res.body.ok).toBe(true)
   })
 
-  it('Find Provider By ID', async () => {
-    try {
-      const { jwt } = await signIn()
+  it('List providers using query parameters', async () => {
+    const { jwt } = await signIn()
 
-      const res = await request(app)
+    for (let i = 0; i < 3; i++) {
+      await request(app)
         .post('/api/providers')
         .set('x-token', jwt)
         .send({
-          name: 'provider-4',
-          email: 'provider5@gmail.com',
-          address: 'Av Siempre Viva',
-          image: 'provider4.com',
-          phone: '946242945'
+          name: 'test' + i,
+          email: 'test' + i + '@gmail.com',
+          address: 'Av Siempre Viva Test ' + i,
+          image: 'test' + i + '.com',
+          phone: '98765432' + i
         })
         .expect(200)
-
-      expect(res.body.provider).not.toBeUndefined()
-      expect(res.body.provider.uuid).not.toBeUndefined()
-
-      await request(app)
-        .get('/api/providers/' + res.body.provider.uuid)
-        .set('x-token', jwt)
-        .expect(200)
-    } catch (error) {
-      console.log(error)
     }
+
+    const limit = 2
+    const offset = 0
+    const res = await request(app).get('/api/providers' + '?limit=' + limit + '&offset=' + offset).expect(200)
+
+    expect(res.body.providers).not.toBeUndefined()
+    expect(res.body.providers).toHaveLength(limit)
+    expect(res.body.total).not.toBeUndefined()
+    expect(res.body.ok).toBe(true)
+  })
+
+  it('List providers when none have been created', async () => {
+    const res = await request(app).get('/api/providers').expect(200)
+
+    expect(res.body.providers).not.toBeUndefined()
+    expect(res.body.providers).toHaveLength(0)
+    expect(res.body.total).not.toBeUndefined()
+    expect(res.body.total).toBe(0)
+    expect(res.body.ok).toBe(true)
   })
 })

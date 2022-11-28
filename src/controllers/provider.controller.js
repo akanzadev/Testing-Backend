@@ -43,7 +43,7 @@ class ProviderController {
   async updateProvider (req, res, next) {
     try {
       const id = req.params.id
-      const { _id, email, ...rest } = req.body
+      const { _id, ...rest } = req.body
       const rta = await this.providerService.update(id, rest)
       res.status(200).json({ ok: true, message: 'Provider updated', ...rta })
     } catch (error) {

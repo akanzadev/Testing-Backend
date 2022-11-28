@@ -18,8 +18,6 @@ class Server {
       categories: '/api/categories',
       products: '/api/products',
       providers: '/api/providers',
-      /* buscar: '/api/buscar',
-      uploads: '/api/uploads', */
       roles: '/api/roles',
       brands: '/api/brands',
       orders: '/api/orders'
@@ -54,8 +52,6 @@ class Server {
     this.app.use(this.paths.auth, require('../routes/auth.routes'))
     this.app.use(this.paths.providers, require('../routes/provider.routes'))
     this.app.use(this.paths.orders, require('../routes/order.routes'))
-    /* this.app.use(this.paths.buscar, require('../routes/buscar.js'))
-    this.app.use(this.paths.uploads, require('../routes/uploads.js')) */
   }
 
   errorHandler () {

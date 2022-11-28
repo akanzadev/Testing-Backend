@@ -13,6 +13,13 @@ class StoreBehavior(TaskSet):
     @task(1)
     def get_brands(self):
         self.client.get("/api/brands")
+        
+    @task(6)
+    def get_brands(self):
+        self.client.get("/api/providers")
+
+
+
 
 
 class Test_Store(HttpLocust):

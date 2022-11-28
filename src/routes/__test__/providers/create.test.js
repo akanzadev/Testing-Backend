@@ -8,9 +8,10 @@ const { signIn } = require('../../../../test/setup')
 const server = new Server()
 const app = server.app
 
-describe('Providers Routes For Create', () => {
-  it('Create Provider', async () => {
+describe('CP-08', () => {
+  it('Create provider with all required features', async () => {
     const { jwt } = await signIn()
+
     const res = await request(app)
       .post('/api/providers')
       .set('x-token', jwt)
@@ -23,10 +24,12 @@ describe('Providers Routes For Create', () => {
       }).expect(200)
 
     expect(res.body.ok).toBe(true)
+    expect(res.body.provider).not.toBeUndefined()
   })
 
-  it('Create Provider 2', async () => {
+  it('Create provider skipping some required features', async () => {
     const { jwt } = await signIn()
+
     const res = await request(app)
       .post('/api/providers')
       .set('x-token', jwt)
@@ -36,11 +39,12 @@ describe('Providers Routes For Create', () => {
         phone: '946242945'
       }).expect(400)
 
+    expect(res.body.ok).toBe(false)
     expect(res.body.message).not.toBeUndefined()
     expect(res.body.message).not.toBe([])
   })
 
-  it('Create Provider 3', async () => {
+  it('Create provider with unique features already in use', async () => {
     const { jwt } = await signIn()
 
     await request(app)

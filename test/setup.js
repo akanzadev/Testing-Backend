@@ -69,7 +69,8 @@ const signIn = async () => {
       email: 'test-demo@gmail.com',
       password: 'test-demo',
       image: 'test-demo.jpg',
-      phone: '946242945'
+      phone: '946242945',
+      role: 'ADMIN_ROLE'
     })
     .expect(200)
 

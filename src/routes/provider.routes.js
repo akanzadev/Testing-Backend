@@ -62,6 +62,7 @@ router.get(
 router.post(
   '/',
   [
+    // validateJwt,
     check('email', 'Email is required').not().isEmpty(),
     check('email', 'Invalid email').isEmail(),
     check('email').custom(emailInUse),
@@ -85,10 +86,7 @@ router.put(
   [
     check('id', 'Invalid ID').isMongoId(),
     check('id').custom(existsProviderById),
-    check('role').custom(existsRole),
-    check('name', 'Name is required').not().isEmpty(),
-    check('email', 'Email is required').not().isEmpty(),
-    check('email', 'Invalid email').isEmail(),
+    check('email', 'Invalid email').optional().isEmail(),
     validateFields
   ],
   (req, res, next) => {

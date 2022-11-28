@@ -1,5 +1,4 @@
 const { Provider } = require('../models')
-const { generateJwt } = require('../helpers')
 
 class ProviderService {
   constructor (roleService) {
@@ -50,6 +49,10 @@ class ProviderService {
   }
 
   async update (id, data) {
+    if (data.email) {
+      const emailInUse = await Provider.findOne({ email: data.email })
+      if (emailInUse) { throw new Error(`Email ${data.email} already exists`) }
+    }
     const provider = await Provider.findByIdAndUpdate(id, data, {
       new: true
     }).populate('role')

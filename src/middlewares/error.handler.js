@@ -7,12 +7,10 @@ function logErrors (err, req, res, next) {
 
 function expressValErrors (err, req, res, next) {
   const { errors = false } = err
-  console.log(err.errors)
-  console.log(errors)
   if (errors) {
     const error = new Error()
     error.status = 400
-    console.log('errors', errors)
+    console.error('errors', errors)
     error.message = errors.map((error) => error.msg)
     next(error)
   }
