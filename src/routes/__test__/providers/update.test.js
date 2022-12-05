@@ -8,7 +8,7 @@ const { signIn } = require('../../../../test/setup')
 const server = new Server()
 const app = server.app
 
-describe('CP-10', () => {
+describe('CP-13', () => {
   it('Update provider with all required features', async () => {
     const { jwt } = await signIn()
 

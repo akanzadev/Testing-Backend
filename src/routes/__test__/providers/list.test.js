@@ -8,7 +8,7 @@ const { signIn } = require('../../../../test/setup')
 const server = new Server()
 const app = server.app
 
-describe('CP-09', () => {
+describe('CP-12', () => {
   it('List Providers', async () => {
     const res = await request(app).get('/api/providers').expect(200)
 

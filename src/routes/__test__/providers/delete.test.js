@@ -8,7 +8,7 @@ const { signIn } = require('../../../../test/setup')
 const server = new Server()
 const app = server.app
 
-describe('CP-11', () => {
+describe('CP-14', () => {
   it('Delete a provider using its id', async () => {
     const { jwt } = await signIn()
 
