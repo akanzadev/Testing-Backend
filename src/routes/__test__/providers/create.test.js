@@ -8,8 +8,8 @@ const { signIn } = require('../../../../test/setup')
 const server = new Server()
 const app = server.app
 
-describe('CP-11', () => {
-  it('Create provider with all required features', async () => {
+describe('TEST CREATE PROVIDER SERVICE', () => {
+  it('Create provider with all required features // CP-01', async () => {
     const { jwt } = await signIn()
 
     const res = await request(app)
@@ -27,7 +27,7 @@ describe('CP-11', () => {
     expect(res.body.provider).not.toBeUndefined()
   })
 
-  it('Create provider skipping some required features', async () => {
+  it('Create provider skipping some required features // CP-02', async () => {
     const { jwt } = await signIn()
 
     const res = await request(app)
@@ -44,7 +44,7 @@ describe('CP-11', () => {
     expect(res.body.message).not.toBe([])
   })
 
-  it('Create provider with unique features already in use', async () => {
+  it('Create provider with unique features already in use // CP-03', async () => {
     const { jwt } = await signIn()
 
     await request(app)

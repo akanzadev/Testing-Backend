@@ -8,8 +8,8 @@ const { signIn } = require('../../../../test/setup')
 const server = new Server()
 const app = server.app
 
-describe('CP-13', () => {
-  it('Update provider with all required features', async () => {
+describe('TEST UPDATE PROVIDER SERVICE', () => {
+  it('Update provider with all required features // CP-07', async () => {
     const { jwt } = await signIn()
 
     const firstRes = await request(app)
@@ -41,7 +41,7 @@ describe('CP-13', () => {
     expect(firstRes.body.provider.uuid).toBe(secondRes.body.provider.uuid)
   })
 
-  it('Updated provider skipping some required features', async () => {
+  it('Updated provider skipping some required features // CP-08', async () => {
     const { jwt } = await signIn()
 
     const firstRes = await request(app)
@@ -70,7 +70,7 @@ describe('CP-13', () => {
     expect(firstRes.body.provider.uuid).toBe(secondRes.body.provider.uuid)
   })
 
-  it('Update provider with unique features already in use', async () => {
+  it('Update provider with unique features already in use // CP-09', async () => {
     const { jwt } = await signIn()
 
     const firstRes = await request(app)
