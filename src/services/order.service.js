@@ -60,6 +60,7 @@ class OrderService {
       provider: data.provider,
       items: orderItems.map(orderItem => orderItem._id)
     })
+    await order.save()
     return { order }
   }
 
