@@ -6,7 +6,8 @@
   "scripts": {
     "build": "echo \"Building...\"",
     "start": "node index",
-    "test": "jest --watchAll --no-cache --detectOpenHandles",
+    "test": "jest",
+    "test:dev": "jest --watchAll --no-cache --detectOpenHandles",
     "start:dev": "nodemon index",
     "start:prod": "node index",
     "eslint": "eslint .",
