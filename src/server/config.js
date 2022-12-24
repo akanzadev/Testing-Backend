@@ -20,7 +20,8 @@ class Server {
       providers: '/api/providers',
       roles: '/api/roles',
       brands: '/api/brands',
-      orders: '/api/orders'
+      orders: '/api/orders',
+      automation: '/api/automations'
     }
 
     this.middlewares()
@@ -52,6 +53,7 @@ class Server {
     this.app.use(this.paths.auth, require('../routes/auth.routes'))
     this.app.use(this.paths.providers, require('../routes/provider.routes'))
     this.app.use(this.paths.orders, require('../routes/order.routes'))
+    this.app.use(this.paths.automation, require('../routes/automation.routes'))
   }
 
   errorHandler () {
