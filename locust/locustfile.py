@@ -2,21 +2,13 @@ from locust import TaskSet, HttpLocust, task
 
 
 class StoreBehavior(TaskSet):
-    @task(10)
-    def get_products(self):
-        self.client.get("/api/products")
-
-    @task(2)
-    def get_categories(self):
-        self.client.get("/api/categories")
-
-    @task(1)
-    def get_brands(self):
-        self.client.get("/api/brands")
-        
     @task(6)
-    def get_brands(self):
+    def get_providers(self):
         self.client.get("/api/providers")
+
+    @task(6)
+    def get_orders(self):
+        self.client.get("/api/orders")
 
 
 
